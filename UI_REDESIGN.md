@@ -1,4 +1,4 @@
-# 🎨 Professional UI Redesign - Hospital Management System
+#  Professional UI Redesign - Hospital Management System
 
 ## Overview
 The Hospital Management System has been completely redesigned with:
@@ -37,7 +37,7 @@ The Hospital Management System has been completely redesigned with:
 
 ---
 
-## 🔐 LOGIN PAGE
+##  LOGIN PAGE
 
 ### Features
 - **Centered Professional Card** - Modern login form appearance

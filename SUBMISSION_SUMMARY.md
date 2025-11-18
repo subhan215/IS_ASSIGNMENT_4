@@ -372,8 +372,3 @@ Refer to `Assignment4.py` for:
 
 ---
 
-**Project Status**: ✅ Complete & Ready for Submission
-
-**Last Updated**: November 2025
-
-**Grade Target**: 95-100 marks (All requirements met + bonus features)

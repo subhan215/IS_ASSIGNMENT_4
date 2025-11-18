@@ -213,7 +213,7 @@ def uptime_str():
 @st.fragment(run_every=1)
 def display_uptime():
     """Display uptime with continuous updates using fragment"""
-    st.metric("⏱️ Uptime", uptime_str())
+    st.metric(" Uptime", uptime_str())
 
 # ============== LOGIN PAGE ==============
 if st.session_state["user"] is None:
@@ -237,12 +237,12 @@ if st.session_state["user"] is None:
         with col_btn1:
             login_btn = st.button("🔓 Login", use_container_width=True, type="primary")
         with col_btn2:
-            with st.expander("ℹ️ Demo Accounts"):
+            with st.expander(" Demo Accounts"):
                 st.code("admin / admin123\ndrbob / doc123\nalice_recep / rec123", language="text")
         
         if login_btn:
             if not username or not password:
-                st.error("❌ Please enter both username and password")
+                st.error(" Please enter both username and password")
             else:
                 try:
                     user, err = login(username.strip(), password)
@@ -252,9 +252,9 @@ if st.session_state["user"] is None:
                         time.sleep(0.5)
                         st.rerun()
                     else:
-                        st.error(f"❌ {err}")
+                        st.error(f" {err}")
                 except Exception as e:
-                    st.error(f"❌ Login error: {e}")
+                    st.error(f" Login error: {e}")
                     logging.error(f"Login failed for {username}: {e}")
     
     st.stop()
@@ -269,7 +269,7 @@ user_has_consent = check_consent(user['user_id'])
 # GDPR consent required before interacting
 if not user_has_consent:
     st.warning("""
-    ⚠️ **GDPR Consent Required**  
+     **GDPR Consent Required**  
     This system processes personal data. Your consent is needed to proceed.
     """)
     col1, col2 = st.columns(2)
@@ -277,7 +277,7 @@ if not user_has_consent:
         if st.button("✓ I Consent"):
             try:
                 set_consent(user['user_id'], user['username'], role, consent=True)
-                st.success("✅ Consent recorded.")
+                st.success(" Consent recorded.")
             except Exception as e:
                 st.error(f"Error: {e}")
                 logging.error(f"Failed to set consent: {e}")
@@ -420,7 +420,7 @@ def render_patients_table():
         
         # Display with better styling
         if len(df) > 0:
-            st.markdown(f"**📊 Total Patients: {len(df)}**")
+            st.markdown(f" Total Patients: {len(df)}")
             # Use st.dataframe with column configuration for better display
             st.dataframe(
                 df, 
@@ -456,20 +456,20 @@ if st.session_state["current_tab"] == "patients":
     st.markdown("---")
     
     if role == "receptionist":
-        st.warning("🔒 Receptionists cannot view patient records. Use the 'Add Patient' tab to add or edit records.")
+        st.warning("Receptionists cannot view patient records. Use the 'Add Patient' tab to add or edit records.")
     elif role == "admin":
         st.markdown("")
         col1, col2, col3 = st.columns([1, 2, 1])
         with col1:
             st.markdown("### Display Mode")
         with col2:
-            show = st.checkbox("🔓 Show Decrypted Data", value=st.session_state.get("show_decrypted", False), key="patients_decrypt")
+            show = st.checkbox("Show Decrypted Data", value=st.session_state.get("show_decrypted", False), key="patients_decrypt")
             st.session_state["show_decrypted"] = show
         with col3:
             if show:
-                st.success("🔓 Decrypted")
+                st.success("Decrypted")
             else:
-                st.info("🔒 Anonymized")
+                st.info("Anonymized")
         
         st.markdown("---")
         render_patients_table()
@@ -484,7 +484,7 @@ if st.session_state["current_tab"] == "add_patient":
     
     # Only admin and receptionist can add patients
     if role not in ["admin", "receptionist"]:
-        st.error("🔒 Only Admin and Receptionist can add patients.")
+        st.error("Only Admin and Receptionist can add patients.")
     else:
         col1, col2 = st.columns([1, 1])
         col1.markdown("---")
@@ -500,16 +500,16 @@ if st.session_state["current_tab"] == "add_patient":
                 st.markdown("")
                 diagnosis = st.text_area("Diagnosis", placeholder="e.g., Flu, Fracture, etc.", height=100)
                 st.markdown("")
-                submitted = st.form_submit_button("✅ Add Patient", use_container_width=True, type="primary")
+                submitted = st.form_submit_button("Add Patient", use_container_width=True, type="primary")
                 
                 if submitted:
                     if not name or not contact or not diagnosis:
-                        st.error("❌ All fields are required.")
+                        st.error("All fields are required.")
                     else:
                         try:
                             pid = add_patient(name.strip(), contact.strip(), diagnosis.strip(), datetime.utcnow().isoformat())
                             add_log(user['user_id'], user['username'], role, "add_patient", f"patient_id={pid}, name_hash={hash(name)}")
-                            st.success(f"✅ Patient added successfully (ID: {pid})")
+                            st.success(f"Patient added successfully (ID: {pid})")
                             logging.info(f"Patient {pid} added by {user['username']}")
                         except Exception as e:
                             st.error(f"❌ Failed to add patient: {e}")
@@ -541,7 +541,7 @@ if st.session_state["current_tab"] == "add_patient":
                                 st.markdown("")
                                 new_diag = st.text_area("Update Diagnosis", value=p.get('diagnosis') or "", key=f"diag_{pid}", height=100)
                                 st.markdown("")
-                                if st.button("✅ Update Diagnosis", key=f"update_{pid}", use_container_width=True, type="primary"):
+                                if st.button("Update Diagnosis", key=f"update_{pid}", use_container_width=True, type="primary"):
                                     try:
                                         update_patient(pid, diagnosis=new_diag)
                                         add_log(user['user_id'], user['username'], role, "update_patient", f"patient_id={pid}, field=diagnosis")
@@ -554,16 +554,16 @@ if st.session_state["current_tab"] == "add_patient":
                     st.error(f"Error loading patients: {e}")
                     logging.error(f"Edit patient tab error: {e}")
             else:
-                st.info("📋 Only Admin and Receptionist can edit records.")
+                st.info("Only Admin and Receptionist can edit records.")
 
 # --- Anonymize tab
 # --- PAGE: Anonymize
 if st.session_state["current_tab"] == "anonymize":
-    st.subheader("🔐 Anonymize & Encrypt / Decrypt")
+    st.subheader("Anonymize & Encrypt / Decrypt")
     st.markdown("---")
     
     if role != "admin":
-        st.warning("🔒 Only admin can access this.")
+        st.warning("Only admin can access this.")
     else:
         try:
             patients_all = fetch_patients(raw=True)
@@ -594,7 +594,7 @@ if st.session_state["current_tab"] == "anonymize":
                         
                         st.success(f"✓ Anonymized {count} records")
                         if errors:
-                            st.warning(f"⚠️ {len(errors)} errors during anonymization")
+                            st.warning(f" {len(errors)} errors during anonymization")
                             for err in errors:
                                 st.caption(err)
                 
@@ -607,7 +607,7 @@ if st.session_state["current_tab"] == "anonymize":
                     col1, col2 = st.columns(2)
                     
                     with col1:
-                        if st.button("🔒 Encrypt Data", key="enc_btn"):
+                        if st.button("Encrypt Data", key="enc_btn"):
                             enc_count = 0
                             enc_errors = []
                             
@@ -625,10 +625,10 @@ if st.session_state["current_tab"] == "anonymize":
                             
                             st.success(f"✓ Encrypted {enc_count} records")
                             if enc_errors:
-                                st.warning(f"⚠️ {len(enc_errors)} encryption errors")
+                                st.warning(f"{len(enc_errors)} encryption errors")
                     
                     with col2:
-                        if st.button("🔓 Decrypt & Display", key="dec_btn"):
+                        if st.button("Decrypt & Display", key="dec_btn"):
                             dec_count = 0
                             dec_errors = []
                             dec_data = []
@@ -648,9 +648,9 @@ if st.session_state["current_tab"] == "anonymize":
                                 st.dataframe(pd.DataFrame(dec_data), use_container_width=True)
                             st.success(f"✓ Decrypted {dec_count} records")
                             if dec_errors:
-                                st.warning(f"⚠️ {len(dec_errors)} decryption errors")
+                                st.warning(f"{len(dec_errors)} decryption errors")
                 else:
-                    st.warning("⚠️ Fernet key not loaded")
+                    st.warning("Fernet key not loaded")
                     if st.button("Generate Fernet Key", key="gen_key_btn"):
                         try:
                             k = generate_fernet_key()
@@ -670,7 +670,7 @@ if st.session_state["current_tab"] == "anonymize":
 if st.session_state["current_tab"] == "logs":
     st.subheader("📋 Integrity Audit Log")
     if role != "admin":
-        st.info("🔒 Only admin can view audit logs.")
+        st.info("Only admin can view audit logs.")
     else:
         try:
             logs = fetch_logs(limit=1000)
@@ -705,7 +705,7 @@ if st.session_state["current_tab"] == "logs":
 if st.session_state["current_tab"] == "backup":
     st.subheader("📦 Backup / Export")
     if role != "admin":
-        st.warning("🔒 Only Admin can export data.")
+        st.warning("Only Admin can export data.")
     else:
         try:
             patients = fetch_patients(raw=True)
@@ -753,7 +753,7 @@ if st.session_state["current_tab"] == "backup":
 if st.session_state["current_tab"] == "activity":
     st.subheader("📊 User Activity Graph")
     if role != "admin":
-        st.info("🔒 Only Admin can view activity graphs.")
+        st.info("Only Admin can view activity graphs.")
     else:
         try:
             logs = fetch_logs(limit=5000)
@@ -789,7 +789,7 @@ if st.session_state["current_tab"] == "activity":
 if st.session_state["current_tab"] == "retention":
     st.subheader("🗑️ Data Retention")
     if role != "admin":
-        st.warning("🔒 Only Admin can manage data retention.")
+        st.warning("Only Admin can manage data retention.")
     else:
         st.info("**GDPR:** Automatically anonymizes records older than 365 days.")
         
@@ -859,7 +859,7 @@ if st.session_state["current_tab"] == "retention":
 # --- Footer
 st.divider()
 st.markdown("""
-### 🔐 CIA Triad Implementation
+### CIA Triad Implementation
 - **Confidentiality:** Fernet encryption, SHA-256 anonymization, role-based masking
 - **Integrity:** Audit logging, activity tracking, immutable logs
 - **Availability:** Fast database, recovery options, robust error handling
