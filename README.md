@@ -340,6 +340,8 @@ For questions or issues:
 4. Consult GDPR and CIA Triad resources
 
 ---
+System Overview Diagram:
+<img width="2896" height="1618" alt="image" src="https://github.com/user-attachments/assets/9fef592f-d878-4122-8865-2e458e7c4b51" />
 
 **Last Updated**: November 2025  
 **Status**: Production-Ready for Educational Use
