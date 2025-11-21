@@ -204,13 +204,32 @@ st.markdown("""
    
     [data-testid="stSidebar"] [data-testid="metric-container"] .stMetric > label {
         font-size: 0.8rem !important;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: white !important;
     }
    
     [data-testid="stSidebar"] [data-testid="metric-container"] .stMetric > div {
         font-size: 1.1rem !important;
         color: white !important;
         font-weight: 600 !important;
+    }
+
+    /* Ensure sidebar metric text is always white */
+    [data-testid="stSidebar"] .stMetric {
+        color: white !important;
+    }
+
+    [data-testid="stSidebar"] .stMetric > label {
+        color: white !important;
+    }
+
+    [data-testid="stSidebar"] .stMetric > div > div {
+        color: white !important;
+    }
+
+    /* Override any default black text in sidebar metrics */
+    [data-testid="stSidebar"] .stMetric .stMetricLabel,
+    [data-testid="stSidebar"] .stMetric .stMetricValue {
+        color: white !important;
     }
    
     /* Navigation radio buttons - More compact (legacy, if needed) */
